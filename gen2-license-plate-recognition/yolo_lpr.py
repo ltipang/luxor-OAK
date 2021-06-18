@@ -188,7 +188,6 @@ def lic_thread(det_queue, det_pass, rec_queue):
                 bbox = frame_norm(orig_frame, (detection.xmin, detection.ymin, detection.xmax, detection.ymax))
                 cropped_frame = orig_frame[bbox[1]:bbox[3], bbox[0]:bbox[2]]
                 print("Detect plate")
-                print(detection)
                 tstamp = time.monotonic()
                 img = dai.ImgFrame()
                 img.setTimestamp(tstamp)
