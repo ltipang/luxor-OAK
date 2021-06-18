@@ -1,0 +1,74 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name='viewport' content='width=device-width, initial-scale=1'>
+<title>Login</title>
+<link rel="stylesheet" type="text/css" href="static/css/style.css">
+<link rel="stylesheet" type="text/css" href="static/css/res.css">
+<link rel="shortcut icon" href="static/images/logo_03.png" >
+
+<link href="https://fonts.googleapis.com/css?family=Montserrat:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&display=swap" rel="stylesheet"> 
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+</head>
+
+<body>
+<div class="container-fluid login-contentgrp">
+<div class="container-fluid login-contentgrpinner">
+  <div class="container-fluid layer"> </div>
+  <div class="container-fluid login-contentgrpform">
+  <div class="container">
+    <div class="row">
+      <div class=" col-xs-12 col-md-12 col-sm-12 col-lg-12 text-center mydiv">
+        <div class="luxor">
+           
+           <a href="#"><img src="static/images/logo_03.png" alt=""></a>
+           
+          <h4>Please Signin to your Account</h4>
+          <form action="" method="post">
+            <input id="email" name="email" type="email" placeholder="Email" class="form-control" required>
+            <input id="password" name="password" type="password" placeholder="Password"  class="form-control" required>
+            <div class="layer-checkbox">
+              <div class="layer-rem-check">
+                <div class="checkmark-luxor"> 
+                <input type="checkbox" class="checkbox">
+                <span class="checkmark-span">&#10004;</span>
+                </div>
+                <p>Remember Me</p>
+              </div>
+              <input type="submit" class="btn" value="Sign in" placeholder="">
+            </div>
+            <div class="link-layerforgot">
+              <a href="#">Forgot Password</a>
+              <span>|</span>
+              <a href="#">Problem Signing in?</a> </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
+  <div class="container-fluid layerbottom"> </div>
+  </div>
+  <footer class="luxor-footer">
+    <p>Copyright © <span id="demo"></span> <a href="#">Luxor</a> Source. All rights reserved</p>
+  </footer>
+</div>
+<script>
+
+  var d = new Date();
+  var n = d.getFullYear();
+  document.getElementById("demo").innerHTML = n;
+
+</script>
+</body>
+</html>

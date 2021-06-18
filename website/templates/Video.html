@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %} 
+Video
+{% endblock %}
+{% block content %}
+	
+	<script src="static/scripts/pages/video.js"></script>
+	<!-------------------------------Render Body Part---------------------------------------------------------------------------------->
+	<link rel="stylesheet" href="static/css/products.css" />
+	<div class="white">
+		<section class="content">
+			<div class="row">
+				<div class="col-xs-12">
+					<div class="white">
+						<div class="page" style="align-items: center; justify-content: center;">
+							<div class="layout-box">
+								<h3 class="indent">Manage Videos</h3>
+								<div>
+									<div id="exportPdfButton"></div>
+									<div id="exportxlsxButton"></div>
+									<div id="Timeline" style="float:right;"></div>
+									<div id="grid" class="products"></div>
+								</div>
+
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+		</section>
+	</div>
+	<div id="video_popup"> </div>
+	<div id="custom_search_popup"></div>
+	<a id='download' href='' download=''></a>
+{% endblock %}

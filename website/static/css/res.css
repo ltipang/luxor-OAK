@@ -1,0 +1,407 @@
+@charset "utf-8";
+/* CSS Document */
+@media only screen and (max-width:1199px)
+{
+
+.process-vechilegrp {
+	display: inline-block;
+	text-align: center;
+	width: auto;
+	margin: 0px 20px;
+}
+
+.process-vechile > .dashboard-grid .count-view {
+	text-align: center;
+	width: auto;
+	float: none;
+}
+.process-vechile {
+	display: inline-block;
+	float: none;
+	width: auto;
+}
+	.camera-liveviewgrp {
+	display: inline-block;
+	float: left;
+	max-width: 100%;
+	text-align: left;
+}
+.camerasearch-liveviewgrp {
+	display: inline-block;
+	float: left;
+	width: 100%;
+	padding: 0px 20px;
+}
+.camerasearch-liveviewgrp form {
+	width: 100%;
+	display: inline-block;
+	float: left;
+	padding-top: 30px;
+}
+.licence_input input {
+	width: 40%;
+}
+.model_input input {
+	width: 30%;
+}
+.color_input input {
+	width: 30%;
+}
+.search_input > input {
+	width: 15%;
+	padding: 5px 5px;
+	margin-right:10px;
+}
+.bycamera_content select {
+	width: 15%;
+	padding: 5px 5px
+}
+.licence_input label {
+width: 17%;
+
+}
+.model_input label {
+width: 17%;
+
+}
+.color_input label {
+width: 17%;
+}
+
+.search_input > label {
+width: 17%;
+
+}
+.bycamera_content span{
+width: 17%;
+}
+.bycamera_content select {
+	width: 15%;
+	margin-bottom: 30px;
+}
+}
+
+@media only screen and (max-width:991px)
+{
+	.login-contentgrpform {
+	position: absolute;
+	float: left;
+	width: 100%;
+	left: 0px;
+	bottom: -30px;
+	display: inline-block;
+}
+.btn-luxor {
+	display: inline-block;
+	float: right;
+	width: auto;
+}
+.listdashboardcontent {
+	display: none;
+	float: left;
+	width: 100%;
+}
+.dashboard2alist {
+	width: auto;
+}
+.profile-grpviewtable {
+	width: 100%;
+}
+.dashboard-contentviewprofile ul li {
+	margin: 1px 1px !important;
+	background-color: #3f96c9 !important;
+}
+.process-vechilegrp {
+	display: inline-block;
+	text-align: center;
+	width: auto;
+	margin: 0px 40px;
+}
+.process-vechile > .dashboard-grid .count-view {
+	text-align: center;
+	width: auto;
+	float: none;
+}
+.process-vechile > .dashboard-grid .count-view h1 {
+	font-size: 25px;
+	min-height: auto !important;
+}
+.process-vechile {
+	display: inline-block;
+	float: none;
+	width: 140px;
+}
+.process-vechilegrp {
+	display: inline-block;
+	text-align: center;
+	width: auto;
+	margin: 0px 18px;
+}
+}
+
+@media only screen and (max-width:767px)
+{
+	#search-tbl {
+	width: 100%;
+	margin: 0px !important;
+}
+.dashboard-displaycontent {
+	display: inline-block;
+	float: right;
+	width: 100%;
+	padding-right: 15px;
+	margin: 10px 0px;
+}
+.process-vechilegrp {
+	display: inline-block;
+	text-align: left;
+	width: 100%;
+	margin: 15px 18px;
+}
+	.layer-checkbox input[type="submit"] {
+	font-size: 14px;
+}
+	.luxor h4 {
+	font-size: 15px;
+}
+	.luxor-footer {
+	padding-top: 15%;
+}
+.luxor {
+	display: inline-block;
+	width: 100%;
+	background-color: white;
+	padding:10px;
+	text-align: center;
+	box-shadow: 0px 15px 5px #000;
+}
+.link-layerforgot a {
+	font-size: 12px;
+	padding: 0px;
+}
+.luxor-footer p {
+	font-size: 13px;
+}
+	.dashboard1a-logo {
+	display: inline-block;
+	float: left;
+	width: 100%;
+	padding: 10px;
+}
+	.dashboard1a-logo a {
+    display: inline-block;
+    width: 100px !important;
+}
+.dashboard-contentview ul li {
+	display: inline-block;
+	margin: 10px 20px;
+	float: none;
+	text-align: center;
+}
+.camera-liveviewgrp h1,.camerasearch-liveviewgrp form label
+{
+	font-size: 16px;
+}
+.password-form input[type="password"]
+{
+	width:100% !important;
+}
+.alert_name label, .send label, .alert_type label, .alert_type label, .description label,.start_now {
+	width: 100% !important;
+}
+.alert_name input,.alert_type select,.send input,.description input{
+	width: 100% !important;
+	margin-top:0px !important;
+}
+.name_camera label, .address_camera label, .port_camera label, .username_camera label,.password_camera label, .model_camera label
+, .method_camera label,.start_nowgrp1 label {
+   
+    min-width: 100%;
+   
+}
+.name_camera input, .address_camera input, .port_camera input, .username_camera input,.password_camera input, .model_camera input
+, .method_camera input,.start_nowgrp1 input {
+   
+   width: 100% !important;
+	margin-top:0px !important;
+   
+}
+.licence_input label,.model_input label,.color_input label,.search_input label,.bycamera_content span {
+	width: 100%;
+}
+.licence_input input,.model_input input,.color_input input,.search_input input,.bycamera_content select
+{
+	width: 100% !important;
+	margin-top:10px;
+}
+.dashboard1b {
+	display: inline-block;
+	float: left;
+	padding: 30px 10px;
+	max-width: 100%;
+	width: 100%;
+}
+.search-dashboardluxor {
+	float: left;
+	width: 100%;
+	display: inline-block;
+	text-align: center;
+}
+.profile-dashboardluxor {
+	display: inline-block;
+	float: left;
+	width: auto;
+	margin-left: 0;
+	position: absolute;
+	top: 30px;
+	right: 10px;
+}
+.search-dashboardluxor form {
+	display: inline-block;
+	float: none;
+}
+}
+
+@media only screen and (max-width:630px)
+{
+	
+	.profile-grpviewtable {
+	display: inline-block;
+	float: left;
+	width: 100%;
+	padding: 10px;
+}
+	.dashboard1b {
+	width: 100%;
+	text-align: center;
+}
+.search-dashboardluxor {
+	float: none;
+	display: inline-block;
+}
+.dashboard1b {
+	display: inline-block;
+	float: right;
+	padding: 10px 5px;
+}
+.dashboard-displaycontent {
+	display: inline-block;
+	float: left;
+	width: 100%;
+	padding-right: 0px;
+	padding-left: 15px;
+	margin-top: 10px;
+}
+.breadcrum-dashboard {
+	display: inline-block;
+	float: left;
+	width: 100%;
+	padding-left: 5px;
+}
+.search_content h4 {
+    padding:0px;
+}
+.search_content h5 {
+ padding:0px;
+
+}
+.licence_input input {
+	width: 50%;
+}
+.model_input input {
+	width: 30%;
+}
+.color_input input {
+	width: 30%;
+}
+.search_input input {
+width: 25%;
+}
+.licence_input label {
+width: 30%;
+padding: 0px;
+}
+.model_input label {
+width: 30%;
+padding: 0px;
+}
+.color_input label {
+width: 30%;
+padding: 0px;
+}
+.search_input > label {
+width: 30%;
+padding: 0px;
+
+}
+.bycamera_content span {
+	width: 30%;
+	/* text-align: center; */
+	padding: 0px;
+}
+.bycamera_content select {
+	width: 30%;
+	margin-bottom: 30px;
+}
+.type_button{
+	text-align:center
+}
+.type_button button{
+float: none;
+margin-right: 40px;
+}
+
+}
+
+@media only screen and (max-width:450px)
+{
+	.dashboard-contentview ul li {
+	display: inline-block;
+	margin: 10px 0px;
+	float: none;
+}
+.dashboard-displaycontent a {
+	margin: 3px 5px;
+}
+
+.search_content h4 {
+}
+.search_content h5 {
+
+}
+.licence_input label {
+	width:100%;
+	
+}
+.licence_input input {
+	width: 100%;
+	
+}
+.model_input label {
+width: 100%;
+
+}
+.model_input input {
+	
+	
+
+}
+.color_input label{
+	width:100%;
+	
+	}
+.color_input input {
+
+}
+.search_input > label{
+	width:100%;
+	
+	}
+
+.bycamera_content span {
+	width: 100%;
+}
+.bycamera_content select {
+	
+}
+}

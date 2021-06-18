@@ -1,0 +1,1523 @@
+{% extends 'base.html' %}
+{% block sidebar %} 
+	<!-- BEGIN SIDEBAR MENU -->
+	<!-- DOC: Apply "page-sidebar-menu-light" class right after "page-sidebar-menu" to enable light sidebar menu style(without borders) -->
+	<!-- DOC: Apply "page-sidebar-menu-hover-submenu" class right after "page-sidebar-menu" to enable hoverable(hover vs accordion) sub menu mode -->
+	<!-- DOC: Apply "page-sidebar-menu-closed" class right after "page-sidebar-menu" to collapse("page-sidebar-closed" class must be applied to the body element) the sidebar sub menu mode -->
+	<!-- DOC: Set data-auto-scroll="false" to disable the sidebar from auto scrolling/focusing -->
+	<!-- DOC: Set data-keep-expand="true" to keep the submenues expanded -->
+	<!-- DOC: Set data-auto-speed="200" to adjust the sub menu slide up/down speed -->
+	<ul class="page-sidebar-menu  page-header-fixed page-sidebar-menu-light " data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200" style="padding-top: 20px">
+		<!-- DOC: To remove the sidebar toggler from the sidebar you just need to completely remove the below "sidebar-toggler-wrapper" LI element -->
+		<li class="sidebar-toggler-wrapper hide">
+			<!-- BEGIN SIDEBAR TOGGLER BUTTON -->
+			<div class="sidebar-toggler">
+				<span></span>
+			</div>
+			<!-- END SIDEBAR TOGGLER BUTTON -->
+		</li>
+		<!-- DOC: To remove the search box from the sidebar you just need to completely remove the below "sidebar-search-wrapper" LI element -->
+		<li class="sidebar-search-wrapper">
+			<!-- BEGIN RESPONSIVE QUICK SEARCH FORM -->
+			<!-- DOC: Apply "sidebar-search-bordered" class the below search form to have bordered search box -->
+			<!-- DOC: Apply "sidebar-search-bordered sidebar-search-solid" class the below search form to have bordered & solid search box -->
+			<form class="sidebar-search  " action="page_general_search_3.html" method="POST">
+				<a href="javascript:;" class="remove">
+					<i class="icon-close"></i>
+				</a>
+				<div class="input-group">
+					<input type="text" class="form-control" placeholder="Search...">
+					<span class="input-group-btn">
+						<a href="javascript:;" class="btn submit">
+							<i class="icon-magnifier"></i>
+						</a>
+					</span>
+				</div>
+			</form>
+			<!-- END RESPONSIVE QUICK SEARCH FORM -->
+		</li>
+		{% for menu in menu_items %}
+			{% if menu['title']==selected %}
+				<li class="nav-item start active open">
+					<a href="{{ url_for(menu['url'])}}" class="nav-link nav-toggle">
+						<i class="{{menu['icon']}}"></i>
+						<span class="title">{{menu['title']}}</span>
+						<span class="selected"></span>
+					</a>
+				</li>
+			{% else %}
+				<li class="nav-item ">
+					<a href="{{ url_for(menu['url'])}}" class="nav-link nav-toggle">
+						<i class="{{menu['icon']}}"></i>
+						<span class="title">{{menu['title']}}</span>
+					</a>
+				</li>
+			{% endif %}
+			
+		{% endfor %}
+		
+	</ul>
+	<!-- END SIDEBAR MENU -->
+	<!-- END SIDEBAR MENU -->
+{% endblock %}
+{% block content %}
+   
+	<!-- BEGIN PAGE HEADER-->
+	<!-- BEGIN THEME PANEL -->
+	<div class="theme-panel hidden-xs hidden-sm">
+		<div class="toggler"> </div>
+		<div class="toggler-close"> </div>
+		<div class="theme-options">
+			<div class="theme-option theme-colors clearfix">
+				<span> THEME COLOR </span>
+				<ul>
+					<li class="color-default current tooltips" data-style="default" data-container="body" data-original-title="Default"> </li>
+					<li class="color-darkblue tooltips" data-style="darkblue" data-container="body" data-original-title="Dark Blue"> </li>
+					<li class="color-blue tooltips" data-style="blue" data-container="body" data-original-title="Blue"> </li>
+					<li class="color-grey tooltips" data-style="grey" data-container="body" data-original-title="Grey"> </li>
+					<li class="color-light tooltips" data-style="light" data-container="body" data-original-title="Light"> </li>
+					<li class="color-light2 tooltips" data-style="light2" data-container="body" data-html="true" data-original-title="Light 2"> </li>
+				</ul>
+			</div>
+			<div class="theme-option">
+				<span> Theme Style </span>
+				<select class="layout-style-option form-control input-sm">
+					<option value="square" selected="selected">Square corners</option>
+					<option value="rounded">Rounded corners</option>
+				</select>
+			</div>
+			<div class="theme-option">
+				<span> Layout </span>
+				<select class="layout-option form-control input-sm">
+					<option value="fluid" selected="selected">Fluid</option>
+					<option value="boxed">Boxed</option>
+				</select>
+			</div>
+			<div class="theme-option">
+				<span> Header </span>
+				<select class="page-header-option form-control input-sm">
+					<option value="fixed" selected="selected">Fixed</option>
+					<option value="default">Default</option>
+				</select>
+			</div>
+			<div class="theme-option">
+				<span> Top Menu Dropdown</span>
+				<select class="page-header-top-dropdown-style-option form-control input-sm">
+					<option value="light" selected="selected">Light</option>
+					<option value="dark">Dark</option>
+				</select>
+			</div>
+			<div class="theme-option">
+				<span> Sidebar Mode</span>
+				<select class="sidebar-option form-control input-sm">
+					<option value="fixed">Fixed</option>
+					<option value="default" selected="selected">Default</option>
+				</select>
+			</div>
+			<div class="theme-option">
+				<span> Sidebar Menu </span>
+				<select class="sidebar-menu-option form-control input-sm">
+					<option value="accordion" selected="selected">Accordion</option>
+					<option value="hover">Hover</option>
+				</select>
+			</div>
+			<div class="theme-option">
+				<span> Sidebar Style </span>
+				<select class="sidebar-style-option form-control input-sm">
+					<option value="default" selected="selected">Default</option>
+					<option value="light">Light</option>
+				</select>
+			</div>
+			<div class="theme-option">
+				<span> Sidebar Position </span>
+				<select class="sidebar-pos-option form-control input-sm">
+					<option value="left" selected="selected">Left</option>
+					<option value="right">Right</option>
+				</select>
+			</div>
+			<div class="theme-option">
+				<span> Footer </span>
+				<select class="page-footer-option form-control input-sm">
+					<option value="fixed">Fixed</option>
+					<option value="default" selected="selected">Default</option>
+				</select>
+			</div>
+		</div>
+	</div>
+	<!-- END THEME PANEL -->
+	<!-- BEGIN PAGE BAR -->
+	<div class="page-bar">
+		<ul class="page-breadcrumb">
+			<li>
+				<a href="index.html">Home</a>
+				<i class="fa fa-circle"></i>
+			</li>
+			<li>
+				<span>Dashboard</span>
+			</li>
+		</ul>
+		<div class="page-toolbar">
+			<div id="dashboard-report-range" class="pull-right tooltips btn btn-sm" data-container="body" data-placement="bottom" data-original-title="Change dashboard date range">
+				<i class="icon-calendar"></i>&nbsp;
+				<span class="thin uppercase hidden-xs"></span>&nbsp;
+				<i class="fa fa-angle-down"></i>
+			</div>
+		</div>
+	</div>
+	<!-- END PAGE BAR -->
+	<!-- BEGIN PAGE TITLE-->
+	<h3 class="page-title">  {% block title %} Dashboard {% endblock %}
+		<small>dashboard & statistics</small>
+	</h3>
+	<!-- END PAGE TITLE-->
+	<!-- END PAGE HEADER-->
+	<div class="row">
+		<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+			<div class="dashboard-stat2 ">
+				<div class="display">
+					<div class="number">
+						<h3 class="font-green-sharp">
+							<span data-counter="counterup" data-value="7800">0</span>
+							<small class="font-green-sharp">$</small>
+						</h3>
+						<small>TOTAL PROFIT</small>
+					</div>
+					<div class="icon">
+						<i class="icon-pie-chart"></i>
+					</div>
+				</div>
+				<div class="progress-info">
+					<div class="progress">
+						<span style="width: 76%;" class="progress-bar progress-bar-success green-sharp">
+							<span class="sr-only">76% progress</span>
+						</span>
+					</div>
+					<div class="status">
+						<div class="status-title"> progress </div>
+						<div class="status-number"> 76% </div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+			<div class="dashboard-stat2 ">
+				<div class="display">
+					<div class="number">
+						<h3 class="font-red-haze">
+							<span data-counter="counterup" data-value="1349">0</span>
+						</h3>
+						<small>NEW FEEDBACKS</small>
+					</div>
+					<div class="icon">
+						<i class="icon-like"></i>
+					</div>
+				</div>
+				<div class="progress-info">
+					<div class="progress">
+						<span style="width: 85%;" class="progress-bar progress-bar-success red-haze">
+							<span class="sr-only">85% change</span>
+						</span>
+					</div>
+					<div class="status">
+						<div class="status-title"> change </div>
+						<div class="status-number"> 85% </div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+			<div class="dashboard-stat2 ">
+				<div class="display">
+					<div class="number">
+						<h3 class="font-blue-sharp">
+							<span data-counter="counterup" data-value="567"></span>
+						</h3>
+						<small>NEW ORDERS</small>
+					</div>
+					<div class="icon">
+						<i class="icon-basket"></i>
+					</div>
+				</div>
+				<div class="progress-info">
+					<div class="progress">
+						<span style="width: 45%;" class="progress-bar progress-bar-success blue-sharp">
+							<span class="sr-only">45% grow</span>
+						</span>
+					</div>
+					<div class="status">
+						<div class="status-title"> grow </div>
+						<div class="status-number"> 45% </div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+			<div class="dashboard-stat2 ">
+				<div class="display">
+					<div class="number">
+						<h3 class="font-purple-soft">
+							<span data-counter="counterup" data-value="276"></span>
+						</h3>
+						<small>NEW USERS</small>
+					</div>
+					<div class="icon">
+						<i class="icon-user"></i>
+					</div>
+				</div>
+				<div class="progress-info">
+					<div class="progress">
+						<span style="width: 57%;" class="progress-bar progress-bar-success purple-soft">
+							<span class="sr-only">56% change</span>
+						</span>
+					</div>
+					<div class="status">
+						<div class="status-title"> change </div>
+						<div class="status-number"> 57% </div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-6 col-sm-6">
+			<div class="portlet light ">
+				<div class="portlet-title">
+					<div class="caption">
+						<span class="caption-subject bold uppercase font-dark">Revenue</span>
+						<span class="caption-helper">distance stats...</span>
+					</div>
+					<div class="actions">
+						<a class="btn btn-circle btn-icon-only btn-default" href="#">
+							<i class="icon-cloud-upload"></i>
+						</a>
+						<a class="btn btn-circle btn-icon-only btn-default" href="#">
+							<i class="icon-wrench"></i>
+						</a>
+						<a class="btn btn-circle btn-icon-only btn-default" href="#">
+							<i class="icon-trash"></i>
+						</a>
+						<a class="btn btn-circle btn-icon-only btn-default fullscreen" href="#"> </a>
+					</div>
+				</div>
+				<div class="portlet-body">
+					<div id="dashboard_amchart_1" class="CSSAnimationChart"></div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-6 col-sm-6">
+			<div class="portlet light ">
+				<div class="portlet-title">
+					<div class="caption ">
+						<span class="caption-subject font-dark bold uppercase">Finance</span>
+						<span class="caption-helper">distance stats...</span>
+					</div>
+					<div class="actions">
+						<a href="#" class="btn btn-circle green btn-outline btn-sm">
+							<i class="fa fa-pencil"></i> Export </a>
+						<a href="#" class="btn btn-circle green btn-outline btn-sm">
+							<i class="fa fa-print"></i> Print </a>
+					</div>
+				</div>
+				<div class="portlet-body">
+					<div id="dashboard_amchart_3" class="CSSAnimationChart"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-6 col-sm-6">
+			<div class="portlet light ">
+				<div class="portlet-title tabbable-line">
+					<div class="caption">
+						<i class="icon-bubbles font-dark hide"></i>
+						<span class="caption-subject font-dark bold uppercase">Comments</span>
+					</div>
+					<ul class="nav nav-tabs">
+						<li class="active">
+							<a href="#portlet_comments_1" data-toggle="tab"> Pending </a>
+						</li>
+						<li>
+							<a href="#portlet_comments_2" data-toggle="tab"> Approved </a>
+						</li>
+					</ul>
+				</div>
+				<div class="portlet-body">
+					<div class="tab-content">
+						<div class="tab-pane active" id="portlet_comments_1">
+							<!-- BEGIN: Comments -->
+							<div class="mt-comments">
+								<div class="mt-comment">
+									<div class="mt-comment-img">
+										<img src="../assets/pages/media/users/avatar1.jpg" /> </div>
+									<div class="mt-comment-body">
+										<div class="mt-comment-info">
+											<span class="mt-comment-author">Michael Baker</span>
+											<span class="mt-comment-date">26 Feb, 10:30AM</span>
+										</div>
+										<div class="mt-comment-text"> Lorem Ipsum is simply dummy text of the printing and typesetting industry. </div>
+										<div class="mt-comment-details">
+											<span class="mt-comment-status mt-comment-status-pending">Pending</span>
+											<ul class="mt-comment-actions">
+												<li>
+													<a href="#">Quick Edit</a>
+												</li>
+												<li>
+													<a href="#">View</a>
+												</li>
+												<li>
+													<a href="#">Delete</a>
+												</li>
+											</ul>
+										</div>
+									</div>
+								</div>
+								<div class="mt-comment">
+									<div class="mt-comment-img">
+										<img src="../assets/pages/media/users/avatar6.jpg" /> </div>
+									<div class="mt-comment-body">
+										<div class="mt-comment-info">
+											<span class="mt-comment-author">Larisa Maskalyova</span>
+											<span class="mt-comment-date">12 Feb, 08:30AM</span>
+										</div>
+										<div class="mt-comment-text"> It is a long established fact that a reader will be distracted. </div>
+										<div class="mt-comment-details">
+											<span class="mt-comment-status mt-comment-status-rejected">Rejected</span>
+											<ul class="mt-comment-actions">
+												<li>
+													<a href="#">Quick Edit</a>
+												</li>
+												<li>
+													<a href="#">View</a>
+												</li>
+												<li>
+													<a href="#">Delete</a>
+												</li>
+											</ul>
+										</div>
+									</div>
+								</div>
+								<div class="mt-comment">
+									<div class="mt-comment-img">
+										<img src="../assets/pages/media/users/avatar8.jpg" /> </div>
+									<div class="mt-comment-body">
+										<div class="mt-comment-info">
+											<span class="mt-comment-author">Natasha Kim</span>
+											<span class="mt-comment-date">19 Dec,09:50 AM</span>
+										</div>
+										<div class="mt-comment-text"> The generated Lorem or non-characteristic Ipsum is therefore or non-characteristic. </div>
+										<div class="mt-comment-details">
+											<span class="mt-comment-status mt-comment-status-pending">Pending</span>
+											<ul class="mt-comment-actions">
+												<li>
+													<a href="#">Quick Edit</a>
+												</li>
+												<li>
+													<a href="#">View</a>
+												</li>
+												<li>
+													<a href="#">Delete</a>
+												</li>
+											</ul>
+										</div>
+									</div>
+								</div>
+								<div class="mt-comment">
+									<div class="mt-comment-img">
+										<img src="../assets/pages/media/users/avatar4.jpg" /> </div>
+									<div class="mt-comment-body">
+										<div class="mt-comment-info">
+											<span class="mt-comment-author">Sebastian Davidson</span>
+											<span class="mt-comment-date">10 Dec, 09:20 AM</span>
+										</div>
+										<div class="mt-comment-text"> The standard chunk of Lorem or non-characteristic Ipsum used since the 1500s or non-characteristic. </div>
+										<div class="mt-comment-details">
+											<span class="mt-comment-status mt-comment-status-rejected">Rejected</span>
+											<ul class="mt-comment-actions">
+												<li>
+													<a href="#">Quick Edit</a>
+												</li>
+												<li>
+													<a href="#">View</a>
+												</li>
+												<li>
+													<a href="#">Delete</a>
+												</li>
+											</ul>
+										</div>
+									</div>
+								</div>
+							</div>
+							<!-- END: Comments -->
+						</div>
+						<div class="tab-pane" id="portlet_comments_2">
+							<!-- BEGIN: Comments -->
+							<div class="mt-comments">
+								<div class="mt-comment">
+									<div class="mt-comment-img">
+										<img src="../assets/pages/media/users/avatar4.jpg" /> </div>
+									<div class="mt-comment-body">
+										<div class="mt-comment-info">
+											<span class="mt-comment-author">Michael Baker</span>
+											<span class="mt-comment-date">26 Feb, 10:30AM</span>
+										</div>
+										<div class="mt-comment-text"> Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy. </div>
+										<div class="mt-comment-details">
+											<span class="mt-comment-status mt-comment-status-approved">Approved</span>
+											<ul class="mt-comment-actions">
+												<li>
+													<a href="#">Quick Edit</a>
+												</li>
+												<li>
+													<a href="#">View</a>
+												</li>
+												<li>
+													<a href="#">Delete</a>
+												</li>
+											</ul>
+										</div>
+									</div>
+								</div>
+								<div class="mt-comment">
+									<div class="mt-comment-img">
+										<img src="../assets/pages/media/users/avatar8.jpg" /> </div>
+									<div class="mt-comment-body">
+										<div class="mt-comment-info">
+											<span class="mt-comment-author">Larisa Maskalyova</span>
+											<span class="mt-comment-date">12 Feb, 08:30AM</span>
+										</div>
+										<div class="mt-comment-text"> It is a long established fact that a reader will be distracted by. </div>
+										<div class="mt-comment-details">
+											<span class="mt-comment-status mt-comment-status-approved">Approved</span>
+											<ul class="mt-comment-actions">
+												<li>
+													<a href="#">Quick Edit</a>
+												</li>
+												<li>
+													<a href="#">View</a>
+												</li>
+												<li>
+													<a href="#">Delete</a>
+												</li>
+											</ul>
+										</div>
+									</div>
+								</div>
+								<div class="mt-comment">
+									<div class="mt-comment-img">
+										<img src="../assets/pages/media/users/avatar6.jpg" /> </div>
+									<div class="mt-comment-body">
+										<div class="mt-comment-info">
+											<span class="mt-comment-author">Natasha Kim</span>
+											<span class="mt-comment-date">19 Dec,09:50 AM</span>
+										</div>
+										<div class="mt-comment-text"> The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc. </div>
+										<div class="mt-comment-details">
+											<span class="mt-comment-status mt-comment-status-approved">Approved</span>
+											<ul class="mt-comment-actions">
+												<li>
+													<a href="#">Quick Edit</a>
+												</li>
+												<li>
+													<a href="#">View</a>
+												</li>
+												<li>
+													<a href="#">Delete</a>
+												</li>
+											</ul>
+										</div>
+									</div>
+								</div>
+								<div class="mt-comment">
+									<div class="mt-comment-img">
+										<img src="../assets/pages/media/users/avatar1.jpg" /> </div>
+									<div class="mt-comment-body">
+										<div class="mt-comment-info">
+											<span class="mt-comment-author">Sebastian Davidson</span>
+											<span class="mt-comment-date">10 Dec, 09:20 AM</span>
+										</div>
+										<div class="mt-comment-text"> The standard chunk of Lorem Ipsum used since the 1500s </div>
+										<div class="mt-comment-details">
+											<span class="mt-comment-status mt-comment-status-approved">Approved</span>
+											<ul class="mt-comment-actions">
+												<li>
+													<a href="#">Quick Edit</a>
+												</li>
+												<li>
+													<a href="#">View</a>
+												</li>
+												<li>
+													<a href="#">Delete</a>
+												</li>
+											</ul>
+										</div>
+									</div>
+								</div>
+							</div>
+							<!-- END: Comments -->
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-6 col-sm-6">
+			<div class="portlet light ">
+				<div class="portlet-title tabbable-line">
+					<div class="caption">
+						<i class=" icon-social-twitter font-dark hide"></i>
+						<span class="caption-subject font-dark bold uppercase">Quick Actions</span>
+					</div>
+					<ul class="nav nav-tabs">
+						<li class="active">
+							<a href="#tab_actions_pending" data-toggle="tab"> Pending </a>
+						</li>
+						<li>
+							<a href="#tab_actions_completed" data-toggle="tab"> Completed </a>
+						</li>
+					</ul>
+				</div>
+				<div class="portlet-body">
+					<div class="tab-content">
+						<div class="tab-pane active" id="tab_actions_pending">
+							<!-- BEGIN: Actions -->
+							<div class="mt-actions">
+								<div class="mt-action">
+									<div class="mt-action-img">
+										<img src="../assets/pages/media/users/avatar10.jpg" /> </div>
+									<div class="mt-action-body">
+										<div class="mt-action-row">
+											<div class="mt-action-info ">
+												<div class="mt-action-icon ">
+													<i class="icon-magnet"></i>
+												</div>
+												<div class="mt-action-details ">
+													<span class="mt-action-author">Natasha Kim</span>
+													<p class="mt-action-desc">Dummy text of the printing</p>
+												</div>
+											</div>
+											<div class="mt-action-datetime ">
+												<span class="mt-action-date">3 jun</span>
+												<span class="mt-action-dot bg-green"></span>
+												<span class="mt=action-time">9:30-13:00</span>
+											</div>
+											<div class="mt-action-buttons ">
+												<div class="btn-group btn-group-circle">
+													<button type="button" class="btn btn-outline green btn-sm">Appove</button>
+													<button type="button" class="btn btn-outline red btn-sm">Reject</button>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="mt-action">
+									<div class="mt-action-img">
+										<img src="../assets/pages/media/users/avatar3.jpg" /> </div>
+									<div class="mt-action-body">
+										<div class="mt-action-row">
+											<div class="mt-action-info ">
+												<div class="mt-action-icon ">
+													<i class=" icon-bubbles"></i>
+												</div>
+												<div class="mt-action-details ">
+													<span class="mt-action-author">Gavin Bond</span>
+													<p class="mt-action-desc">pending for approval</p>
+												</div>
+											</div>
+											<div class="mt-action-datetime ">
+												<span class="mt-action-date">3 jun</span>
+												<span class="mt-action-dot bg-red"></span>
+												<span class="mt=action-time">9:30-13:00</span>
+											</div>
+											<div class="mt-action-buttons ">
+												<div class="btn-group btn-group-circle">
+													<button type="button" class="btn btn-outline green btn-sm">Appove</button>
+													<button type="button" class="btn btn-outline red btn-sm">Reject</button>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="mt-action">
+									<div class="mt-action-img">
+										<img src="../assets/pages/media/users/avatar2.jpg" /> </div>
+									<div class="mt-action-body">
+										<div class="mt-action-row">
+											<div class="mt-action-info ">
+												<div class="mt-action-icon ">
+													<i class="icon-call-in"></i>
+												</div>
+												<div class="mt-action-details ">
+													<span class="mt-action-author">Diana Berri</span>
+													<p class="mt-action-desc">Lorem Ipsum is simply dummy text</p>
+												</div>
+											</div>
+											<div class="mt-action-datetime ">
+												<span class="mt-action-date">3 jun</span>
+												<span class="mt-action-dot bg-green"></span>
+												<span class="mt=action-time">9:30-13:00</span>
+											</div>
+											<div class="mt-action-buttons ">
+												<div class="btn-group btn-group-circle">
+													<button type="button" class="btn btn-outline green btn-sm">Appove</button>
+													<button type="button" class="btn btn-outline red btn-sm">Reject</button>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="mt-action">
+									<div class="mt-action-img">
+										<img src="../assets/pages/media/users/avatar7.jpg" /> </div>
+									<div class="mt-action-body">
+										<div class="mt-action-row">
+											<div class="mt-action-info ">
+												<div class="mt-action-icon ">
+													<i class=" icon-bell"></i>
+												</div>
+												<div class="mt-action-details ">
+													<span class="mt-action-author">John Clark</span>
+													<p class="mt-action-desc">Text of the printing and typesetting industry</p>
+												</div>
+											</div>
+											<div class="mt-action-datetime ">
+												<span class="mt-action-date">3 jun</span>
+												<span class="mt-action-dot bg-red"></span>
+												<span class="mt=action-time">9:30-13:00</span>
+											</div>
+											<div class="mt-action-buttons ">
+												<div class="btn-group btn-group-circle">
+													<button type="button" class="btn btn-outline green btn-sm">Appove</button>
+													<button type="button" class="btn btn-outline red btn-sm">Reject</button>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="mt-action">
+									<div class="mt-action-img">
+										<img src="../assets/pages/media/users/avatar8.jpg" /> </div>
+									<div class="mt-action-body">
+										<div class="mt-action-row">
+											<div class="mt-action-info ">
+												<div class="mt-action-icon ">
+													<i class="icon-magnet"></i>
+												</div>
+												<div class="mt-action-details ">
+													<span class="mt-action-author">Donna Clarkson </span>
+													<p class="mt-action-desc">Simply dummy text of the printing</p>
+												</div>
+											</div>
+											<div class="mt-action-datetime ">
+												<span class="mt-action-date">3 jun</span>
+												<span class="mt-action-dot bg-green"></span>
+												<span class="mt=action-time">9:30-13:00</span>
+											</div>
+											<div class="mt-action-buttons ">
+												<div class="btn-group btn-group-circle">
+													<button type="button" class="btn btn-outline green btn-sm">Appove</button>
+													<button type="button" class="btn btn-outline red btn-sm">Reject</button>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="mt-action">
+									<div class="mt-action-img">
+										<img src="../assets/pages/media/users/avatar9.jpg" /> </div>
+									<div class="mt-action-body">
+										<div class="mt-action-row">
+											<div class="mt-action-info ">
+												<div class="mt-action-icon ">
+													<i class="icon-magnet"></i>
+												</div>
+												<div class="mt-action-details ">
+													<span class="mt-action-author">Tom Larson</span>
+													<p class="mt-action-desc">Lorem Ipsum is simply dummy text</p>
+												</div>
+											</div>
+											<div class="mt-action-datetime ">
+												<span class="mt-action-date">3 jun</span>
+												<span class="mt-action-dot bg-green"></span>
+												<span class="mt=action-time">9:30-13:00</span>
+											</div>
+											<div class="mt-action-buttons ">
+												<div class="btn-group btn-group-circle">
+													<button type="button" class="btn btn-outline green btn-sm">Appove</button>
+													<button type="button" class="btn btn-outline red btn-sm">Reject</button>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<!-- END: Actions -->
+						</div>
+						<div class="tab-pane" id="tab_actions_completed">
+							<!-- BEGIN:Completed-->
+							<div class="mt-actions">
+								<div class="mt-action">
+									<div class="mt-action-img">
+										<img src="../assets/pages/media/users/avatar1.jpg" /> </div>
+									<div class="mt-action-body">
+										<div class="mt-action-row">
+											<div class="mt-action-info ">
+												<div class="mt-action-icon ">
+													<i class="icon-action-redo"></i>
+												</div>
+												<div class="mt-action-details ">
+													<span class="mt-action-author">Frank Cameron</span>
+													<p class="mt-action-desc">Lorem Ipsum is simply dummy</p>
+												</div>
+											</div>
+											<div class="mt-action-datetime ">
+												<span class="mt-action-date">3 jun</span>
+												<span class="mt-action-dot bg-red"></span>
+												<span class="mt=action-time">9:30-13:00</span>
+											</div>
+											<div class="mt-action-buttons ">
+												<div class="btn-group btn-group-circle">
+													<button type="button" class="btn btn-outline green btn-sm">Appove</button>
+													<button type="button" class="btn btn-outline red btn-sm">Reject</button>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="mt-action">
+									<div class="mt-action-img">
+										<img src="../assets/pages/media/users/avatar8.jpg" /> </div>
+									<div class="mt-action-body">
+										<div class="mt-action-row">
+											<div class="mt-action-info ">
+												<div class="mt-action-icon ">
+													<i class="icon-cup"></i>
+												</div>
+												<div class="mt-action-details ">
+													<span class="mt-action-author">Ella Davidson </span>
+													<p class="mt-action-desc">Text of the printing and typesetting industry</p>
+												</div>
+											</div>
+											<div class="mt-action-datetime ">
+												<span class="mt-action-date">3 jun</span>
+												<span class="mt-action-dot bg-green"></span>
+												<span class="mt=action-time">9:30-13:00</span>
+											</div>
+											<div class="mt-action-buttons">
+												<div class="btn-group btn-group-circle">
+													<button type="button" class="btn btn-outline green btn-sm">Appove</button>
+													<button type="button" class="btn btn-outline red btn-sm">Reject</button>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="mt-action">
+									<div class="mt-action-img">
+										<img src="../assets/pages/media/users/avatar5.jpg" /> </div>
+									<div class="mt-action-body">
+										<div class="mt-action-row">
+											<div class="mt-action-info ">
+												<div class="mt-action-icon ">
+													<i class=" icon-graduation"></i>
+												</div>
+												<div class="mt-action-details ">
+													<span class="mt-action-author">Jason Dickens </span>
+													<p class="mt-action-desc">Dummy text of the printing and typesetting industry</p>
+												</div>
+											</div>
+											<div class="mt-action-datetime ">
+												<span class="mt-action-date">3 jun</span>
+												<span class="mt-action-dot bg-red"></span>
+												<span class="mt=action-time">9:30-13:00</span>
+											</div>
+											<div class="mt-action-buttons ">
+												<div class="btn-group btn-group-circle">
+													<button type="button" class="btn btn-outline green btn-sm">Appove</button>
+													<button type="button" class="btn btn-outline red btn-sm">Reject</button>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="mt-action">
+									<div class="mt-action-img">
+										<img src="../assets/pages/media/users/avatar2.jpg" /> </div>
+									<div class="mt-action-body">
+										<div class="mt-action-row">
+											<div class="mt-action-info ">
+												<div class="mt-action-icon ">
+													<i class="icon-badge"></i>
+												</div>
+												<div class="mt-action-details ">
+													<span class="mt-action-author">Jan Kim</span>
+													<p class="mt-action-desc">Lorem Ipsum is simply dummy</p>
+												</div>
+											</div>
+											<div class="mt-action-datetime ">
+												<span class="mt-action-date">3 jun</span>
+												<span class="mt-action-dot bg-green"></span>
+												<span class="mt=action-time">9:30-13:00</span>
+											</div>
+											<div class="mt-action-buttons ">
+												<div class="btn-group btn-group-circle">
+													<button type="button" class="btn btn-outline green btn-sm">Appove</button>
+													<button type="button" class="btn btn-outline red btn-sm">Reject</button>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<!-- END: Completed -->
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="row">
+		<div class="col-md-6 col-sm-6">
+			<div class="portlet light ">
+				<div class="portlet-title">
+					<div class="caption">
+						<i class="icon-cursor font-dark hide"></i>
+						<span class="caption-subject font-dark bold uppercase">General Stats</span>
+					</div>
+					<div class="actions">
+						<a href="javascript:;" class="btn btn-sm btn-circle red easy-pie-chart-reload">
+							<i class="fa fa-repeat"></i> Reload </a>
+					</div>
+				</div>
+				<div class="portlet-body">
+					<div class="row">
+						<div class="col-md-4">
+							<div class="easy-pie-chart">
+								<div class="number transactions" data-percent="55">
+									<span>+55</span>% </div>
+								<a class="title" href="javascript:;"> Transactions
+									<i class="icon-arrow-right"></i>
+								</a>
+							</div>
+						</div>
+						<div class="margin-bottom-10 visible-sm"> </div>
+						<div class="col-md-4">
+							<div class="easy-pie-chart">
+								<div class="number visits" data-percent="85">
+									<span>+85</span>% </div>
+								<a class="title" href="javascript:;"> New Visits
+									<i class="icon-arrow-right"></i>
+								</a>
+							</div>
+						</div>
+						<div class="margin-bottom-10 visible-sm"> </div>
+						<div class="col-md-4">
+							<div class="easy-pie-chart">
+								<div class="number bounce" data-percent="46">
+									<span>-46</span>% </div>
+								<a class="title" href="javascript:;"> Bounce
+									<i class="icon-arrow-right"></i>
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-6 col-sm-6">
+			<div class="portlet light ">
+				<div class="portlet-title">
+					<div class="caption">
+						<i class="icon-equalizer font-dark hide"></i>
+						<span class="caption-subject font-dark bold uppercase">Server Stats</span>
+						<span class="caption-helper">monthly stats...</span>
+					</div>
+					<div class="tools">
+						<a href="" class="collapse"> </a>
+						<a href="#portlet-config" data-toggle="modal" class="config"> </a>
+						<a href="" class="reload"> </a>
+						<a href="" class="remove"> </a>
+					</div>
+				</div>
+				<div class="portlet-body">
+					<div class="row">
+						<div class="col-md-4">
+							<div class="sparkline-chart">
+								<div class="number" id="sparkline_bar5"></div>
+								<a class="title" href="javascript:;"> Network
+									<i class="icon-arrow-right"></i>
+								</a>
+							</div>
+						</div>
+						<div class="margin-bottom-10 visible-sm"> </div>
+						<div class="col-md-4">
+							<div class="sparkline-chart">
+								<div class="number" id="sparkline_bar6"></div>
+								<a class="title" href="javascript:;"> CPU Load
+									<i class="icon-arrow-right"></i>
+								</a>
+							</div>
+						</div>
+						<div class="margin-bottom-10 visible-sm"> </div>
+						<div class="col-md-4">
+							<div class="sparkline-chart">
+								<div class="number" id="sparkline_line"></div>
+								<a class="title" href="javascript:;"> Load Rate
+									<i class="icon-arrow-right"></i>
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		
+		<div class="col-md-6 col-sm-6">
+			<!-- BEGIN PORTLET-->
+			<div class="portlet light ">
+				<div class="portlet-title tabbable-line">
+					<div class="caption">
+						<i class="icon-globe font-dark hide"></i>
+						<span class="caption-subject font-dark bold uppercase">Feeds</span>
+					</div>
+					<ul class="nav nav-tabs">
+						<li class="active">
+							<a href="#tab_1_1" class="active" data-toggle="tab"> System </a>
+						</li>
+						<li>
+							<a href="#tab_1_2" data-toggle="tab"> Activities </a>
+						</li>
+					</ul>
+				</div>
+				<div class="portlet-body">
+					<!--BEGIN TABS-->
+					<div class="tab-content">
+						<div class="tab-pane active" id="tab_1_1">
+							<div class="scroller" style="height: 339px;" data-always-visible="1" data-rail-visible="0">
+								<ul class="feeds">
+									<li>
+										<div class="col1">
+											<div class="cont">
+												<div class="cont-col1">
+													<div class="label label-sm label-success">
+														<i class="fa fa-bell-o"></i>
+													</div>
+												</div>
+												<div class="cont-col2">
+													<div class="desc"> You have 4 pending tasks.
+														<span class="label label-sm label-info"> Take action
+															<i class="fa fa-share"></i>
+														</span>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="col2">
+											<div class="date"> Just now </div>
+										</div>
+									</li>
+									<li>
+										<a href="javascript:;">
+											<div class="col1">
+												<div class="cont">
+													<div class="cont-col1">
+														<div class="label label-sm label-success">
+															<i class="fa fa-bell-o"></i>
+														</div>
+													</div>
+													<div class="cont-col2">
+														<div class="desc"> New version v1.4 just lunched! </div>
+													</div>
+												</div>
+											</div>
+											<div class="col2">
+												<div class="date"> 20 mins </div>
+											</div>
+										</a>
+									</li>
+									<li>
+										<div class="col1">
+											<div class="cont">
+												<div class="cont-col1">
+													<div class="label label-sm label-danger">
+														<i class="fa fa-bolt"></i>
+													</div>
+												</div>
+												<div class="cont-col2">
+													<div class="desc"> Database server #12 overloaded. Please fix the issue. </div>
+												</div>
+											</div>
+										</div>
+										<div class="col2">
+											<div class="date"> 24 mins </div>
+										</div>
+									</li>
+									<li>
+										<div class="col1">
+											<div class="cont">
+												<div class="cont-col1">
+													<div class="label label-sm label-info">
+														<i class="fa fa-bullhorn"></i>
+													</div>
+												</div>
+												<div class="cont-col2">
+													<div class="desc"> New order received. Please take care of it. </div>
+												</div>
+											</div>
+										</div>
+										<div class="col2">
+											<div class="date"> 30 mins </div>
+										</div>
+									</li>
+									<li>
+										<div class="col1">
+											<div class="cont">
+												<div class="cont-col1">
+													<div class="label label-sm label-success">
+														<i class="fa fa-bullhorn"></i>
+													</div>
+												</div>
+												<div class="cont-col2">
+													<div class="desc"> New order received. Please take care of it. </div>
+												</div>
+											</div>
+										</div>
+										<div class="col2">
+											<div class="date"> 40 mins </div>
+										</div>
+									</li>
+									<li>
+										<div class="col1">
+											<div class="cont">
+												<div class="cont-col1">
+													<div class="label label-sm label-warning">
+														<i class="fa fa-plus"></i>
+													</div>
+												</div>
+												<div class="cont-col2">
+													<div class="desc"> New user registered. </div>
+												</div>
+											</div>
+										</div>
+										<div class="col2">
+											<div class="date"> 1.5 hours </div>
+										</div>
+									</li>
+									<li>
+										<div class="col1">
+											<div class="cont">
+												<div class="cont-col1">
+													<div class="label label-sm label-success">
+														<i class="fa fa-bell-o"></i>
+													</div>
+												</div>
+												<div class="cont-col2">
+													<div class="desc"> Web server hardware needs to be upgraded.
+														<span class="label label-sm label-default "> Overdue </span>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="col2">
+											<div class="date"> 2 hours </div>
+										</div>
+									</li>
+									<li>
+										<div class="col1">
+											<div class="cont">
+												<div class="cont-col1">
+													<div class="label label-sm label-default">
+														<i class="fa fa-bullhorn"></i>
+													</div>
+												</div>
+												<div class="cont-col2">
+													<div class="desc"> New order received. Please take care of it. </div>
+												</div>
+											</div>
+										</div>
+										<div class="col2">
+											<div class="date"> 3 hours </div>
+										</div>
+									</li>
+									<li>
+										<div class="col1">
+											<div class="cont">
+												<div class="cont-col1">
+													<div class="label label-sm label-warning">
+														<i class="fa fa-bullhorn"></i>
+													</div>
+												</div>
+												<div class="cont-col2">
+													<div class="desc"> New order received. Please take care of it. </div>
+												</div>
+											</div>
+										</div>
+										<div class="col2">
+											<div class="date"> 5 hours </div>
+										</div>
+									</li>
+									<li>
+										<div class="col1">
+											<div class="cont">
+												<div class="cont-col1">
+													<div class="label label-sm label-info">
+														<i class="fa fa-bullhorn"></i>
+													</div>
+												</div>
+												<div class="cont-col2">
+													<div class="desc"> New order received. Please take care of it. </div>
+												</div>
+											</div>
+										</div>
+										<div class="col2">
+											<div class="date"> 18 hours </div>
+										</div>
+									</li>
+									<li>
+										<div class="col1">
+											<div class="cont">
+												<div class="cont-col1">
+													<div class="label label-sm label-default">
+														<i class="fa fa-bullhorn"></i>
+													</div>
+												</div>
+												<div class="cont-col2">
+													<div class="desc"> New order received. Please take care of it. </div>
+												</div>
+											</div>
+										</div>
+										<div class="col2">
+											<div class="date"> 21 hours </div>
+										</div>
+									</li>
+									<li>
+										<div class="col1">
+											<div class="cont">
+												<div class="cont-col1">
+													<div class="label label-sm label-info">
+														<i class="fa fa-bullhorn"></i>
+													</div>
+												</div>
+												<div class="cont-col2">
+													<div class="desc"> New order received. Please take care of it. </div>
+												</div>
+											</div>
+										</div>
+										<div class="col2">
+											<div class="date"> 22 hours </div>
+										</div>
+									</li>
+									<li>
+										<div class="col1">
+											<div class="cont">
+												<div class="cont-col1">
+													<div class="label label-sm label-default">
+														<i class="fa fa-bullhorn"></i>
+													</div>
+												</div>
+												<div class="cont-col2">
+													<div class="desc"> New order received. Please take care of it. </div>
+												</div>
+											</div>
+										</div>
+										<div class="col2">
+											<div class="date"> 21 hours </div>
+										</div>
+									</li>
+									<li>
+										<div class="col1">
+											<div class="cont">
+												<div class="cont-col1">
+													<div class="label label-sm label-info">
+														<i class="fa fa-bullhorn"></i>
+													</div>
+												</div>
+												<div class="cont-col2">
+													<div class="desc"> New order received. Please take care of it. </div>
+												</div>
+											</div>
+										</div>
+										<div class="col2">
+											<div class="date"> 22 hours </div>
+										</div>
+									</li>
+									<li>
+										<div class="col1">
+											<div class="cont">
+												<div class="cont-col1">
+													<div class="label label-sm label-default">
+														<i class="fa fa-bullhorn"></i>
+													</div>
+												</div>
+												<div class="cont-col2">
+													<div class="desc"> New order received. Please take care of it. </div>
+												</div>
+											</div>
+										</div>
+										<div class="col2">
+											<div class="date"> 21 hours </div>
+										</div>
+									</li>
+									<li>
+										<div class="col1">
+											<div class="cont">
+												<div class="cont-col1">
+													<div class="label label-sm label-info">
+														<i class="fa fa-bullhorn"></i>
+													</div>
+												</div>
+												<div class="cont-col2">
+													<div class="desc"> New order received. Please take care of it. </div>
+												</div>
+											</div>
+										</div>
+										<div class="col2">
+											<div class="date"> 22 hours </div>
+										</div>
+									</li>
+									<li>
+										<div class="col1">
+											<div class="cont">
+												<div class="cont-col1">
+													<div class="label label-sm label-default">
+														<i class="fa fa-bullhorn"></i>
+													</div>
+												</div>
+												<div class="cont-col2">
+													<div class="desc"> New order received. Please take care of it. </div>
+												</div>
+											</div>
+										</div>
+										<div class="col2">
+											<div class="date"> 21 hours </div>
+										</div>
+									</li>
+									<li>
+										<div class="col1">
+											<div class="cont">
+												<div class="cont-col1">
+													<div class="label label-sm label-info">
+														<i class="fa fa-bullhorn"></i>
+													</div>
+												</div>
+												<div class="cont-col2">
+													<div class="desc"> New order received. Please take care of it. </div>
+												</div>
+											</div>
+										</div>
+										<div class="col2">
+											<div class="date"> 22 hours </div>
+										</div>
+									</li>
+								</ul>
+							</div>
+						</div>
+						<div class="tab-pane" id="tab_1_2">
+							<div class="scroller" style="height: 290px;" data-always-visible="1" data-rail-visible1="1">
+								<ul class="feeds">
+									<li>
+										<a href="javascript:;">
+											<div class="col1">
+												<div class="cont">
+													<div class="cont-col1">
+														<div class="label label-sm label-success">
+															<i class="fa fa-bell-o"></i>
+														</div>
+													</div>
+													<div class="cont-col2">
+														<div class="desc"> New user registered </div>
+													</div>
+												</div>
+											</div>
+											<div class="col2">
+												<div class="date"> Just now </div>
+											</div>
+										</a>
+									</li>
+									<li>
+										<a href="javascript:;">
+											<div class="col1">
+												<div class="cont">
+													<div class="cont-col1">
+														<div class="label label-sm label-success">
+															<i class="fa fa-bell-o"></i>
+														</div>
+													</div>
+													<div class="cont-col2">
+														<div class="desc"> New order received </div>
+													</div>
+												</div>
+											</div>
+											<div class="col2">
+												<div class="date"> 10 mins </div>
+											</div>
+										</a>
+									</li>
+									<li>
+										<div class="col1">
+											<div class="cont">
+												<div class="cont-col1">
+													<div class="label label-sm label-danger">
+														<i class="fa fa-bolt"></i>
+													</div>
+												</div>
+												<div class="cont-col2">
+													<div class="desc"> Order #24DOP4 has been rejected.
+														<span class="label label-sm label-danger "> Take action
+															<i class="fa fa-share"></i>
+														</span>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="col2">
+											<div class="date"> 24 mins </div>
+										</div>
+									</li>
+									<li>
+										<a href="javascript:;">
+											<div class="col1">
+												<div class="cont">
+													<div class="cont-col1">
+														<div class="label label-sm label-success">
+															<i class="fa fa-bell-o"></i>
+														</div>
+													</div>
+													<div class="cont-col2">
+														<div class="desc"> New user registered </div>
+													</div>
+												</div>
+											</div>
+											<div class="col2">
+												<div class="date"> Just now </div>
+											</div>
+										</a>
+									</li>
+									<li>
+										<a href="javascript:;">
+											<div class="col1">
+												<div class="cont">
+													<div class="cont-col1">
+														<div class="label label-sm label-success">
+															<i class="fa fa-bell-o"></i>
+														</div>
+													</div>
+													<div class="cont-col2">
+														<div class="desc"> New user registered </div>
+													</div>
+												</div>
+											</div>
+											<div class="col2">
+												<div class="date"> Just now </div>
+											</div>
+										</a>
+									</li>
+									<li>
+										<a href="javascript:;">
+											<div class="col1">
+												<div class="cont">
+													<div class="cont-col1">
+														<div class="label label-sm label-success">
+															<i class="fa fa-bell-o"></i>
+														</div>
+													</div>
+													<div class="cont-col2">
+														<div class="desc"> New user registered </div>
+													</div>
+												</div>
+											</div>
+											<div class="col2">
+												<div class="date"> Just now </div>
+											</div>
+										</a>
+									</li>
+									<li>
+										<a href="javascript:;">
+											<div class="col1">
+												<div class="cont">
+													<div class="cont-col1">
+														<div class="label label-sm label-success">
+															<i class="fa fa-bell-o"></i>
+														</div>
+													</div>
+													<div class="cont-col2">
+														<div class="desc"> New user registered </div>
+													</div>
+												</div>
+											</div>
+											<div class="col2">
+												<div class="date"> Just now </div>
+											</div>
+										</a>
+									</li>
+									<li>
+										<a href="javascript:;">
+											<div class="col1">
+												<div class="cont">
+													<div class="cont-col1">
+														<div class="label label-sm label-success">
+															<i class="fa fa-bell-o"></i>
+														</div>
+													</div>
+													<div class="cont-col2">
+														<div class="desc"> New user registered </div>
+													</div>
+												</div>
+											</div>
+											<div class="col2">
+												<div class="date"> Just now </div>
+											</div>
+										</a>
+									</li>
+									<li>
+										<a href="javascript:;">
+											<div class="col1">
+												<div class="cont">
+													<div class="cont-col1">
+														<div class="label label-sm label-success">
+															<i class="fa fa-bell-o"></i>
+														</div>
+													</div>
+													<div class="cont-col2">
+														<div class="desc"> New user registered </div>
+													</div>
+												</div>
+											</div>
+											<div class="col2">
+												<div class="date"> Just now </div>
+											</div>
+										</a>
+									</li>
+									<li>
+										<a href="javascript:;">
+											<div class="col1">
+												<div class="cont">
+													<div class="cont-col1">
+														<div class="label label-sm label-success">
+															<i class="fa fa-bell-o"></i>
+														</div>
+													</div>
+													<div class="cont-col2">
+														<div class="desc"> New user registered </div>
+													</div>
+												</div>
+											</div>
+											<div class="col2">
+												<div class="date"> Just now </div>
+											</div>
+										</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					<!--END TABS-->
+				</div>
+			</div>
+			<!-- END PORTLET-->
+		</div>
+	</div>
+{% endblock %}
+
+	

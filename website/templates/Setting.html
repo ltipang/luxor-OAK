@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% block title %} 
+Setting
+{% endblock %}
+{% block content %}
+	<script src="static/scripts/pages/Camera.js"></script>
+	<link rel="stylesheet" href="static/css/products.css" />
+	
+	<!-------------------------------Render Body Part---------------------------------------------------------------------------------->
+	<section class="content" style="padding: 0px 0px 0px 20px;">
+		<!-- Main row -->
+		<div class="row">
+			<!-- Left margin col -->
+			<section class="col-lg-2">
+			</section>
+			<!-- /.Left margin col -->
+			<!-- Left col -->
+			<section class="col-lg-3">
+				<h1>
+					Zones
+					<small>add, edit, delete</small>
+				</h1>
+				<br>
+				<div>
+					<div id="Zone"></div>
+				</div>
+			</section>
+			<!-- /.Left col -->
+			<!-- Middle margin col -->
+			<section class="col-lg-1">
+			</section>
+			<!-- /.Middle margin col -->
+			<!-- Right col -->
+			<section class="col-lg-4">
+				<h1>
+					Cameras
+					<small>camera-zone setting</small>
+				</h1>
+				<br>
+				<div>
+					<div id="Camera"></div>
+				</div>
+			</section>
+			<!-- /.Right col -->
+			<!-- Right margin col -->
+			<section class="col-lg-2">
+			</section>
+			<!-- /.Right margin col -->
+		</div>
+		<!-- /.row (main row) -->
+
+	</section>
+
+{% endblock %}
