@@ -30,18 +30,6 @@ def bk_user_login():
 		session['user_id'] = id
 		session['user_email'] = email
 		session['user_name'] = result_dict['user_name']
-		sql_command = 'select * from `grids` where `user_id` = %s'
-		num, record = get_one_record(sql_command, 1)
-		if num == 0:
-			sql_command = 'insert into `grids` (`user_id`, `rows`, `cols`) values (%s, %s, %s)'
-			update_record(sql_command, (session['user_id'], 2, 3))
-			session['grid_setting_info'] = [2, 3]
-			session['viewed_cameras_info'] = ''
-		else:
-			session['grid_setting_info'] = record[1:3]
-			session['viewed_cameras_info'] = record[3] if record[3] is not None else ''
-		result_dict['grid_setting_info'] = session['grid_setting_info']
-		result_dict['viewed_cameras_info'] = session['viewed_cameras_info']
 	return json.dumps(result_dict)
 
 @app.route('/bk/gridSetting', methods=['PUT'])
@@ -210,16 +198,16 @@ def bk_zone_delete():
 	return json.dumps(success_200_message('ok'))
 
 ############################   menu   ############################
-usual_menu_items = ['Setting', 'Camera_View', 'Video']
-usual_menu_texts = ['Setting', 'Camera_View', 'Video']
-admin_menu_items = ['User', 'Camera', 'Video']
-admin_menu_texts = ['User', 'Camera', 'Video']
+usual_menu_items = ['Dashboard','Setting', 'Camera_View', 'Video']
+usual_menu_texts = ['Dashboard','Setting', 'Camera_View', 'Video']
+admin_menu_items = ['Dashboard', 'User', 'Camera', 'Video']
+admin_menu_texts = ['Dashboard','User', 'Camera', 'Video']
 
-user_menus = [{ "title" : "Camera_View", "icon" : "icon-camcorder", "url":"fr_Camera_View"}, { "title" : "Video", "icon" : "icon-screen-desktop","url":"fr_Video"}, { "title" : "Setting", "icon" : "icon-settings", "url":"fr_Setting"}]
+user_menus = [{ "title" : "Camera_View", "icon" : "icon-camcorder", "url":"fr_Camera_View"}, { "title" : "Setting", "icon" : "icon-settings", "url":"fr_Setting"}]
 
 #admin_menus = [{ "title" : "Dashboard", "icon" : "icon-home", "url":"fr_test"}, { "title" : "User", "icon" : "icon-user", "url":"fr_User"}, { "title" : "Camera", "icon" : "icon-camcorder", "url":"fr_Camera"}, { "title" : "Video", "icon" : "icon-screen-desktop", "url":"fr_Video"}]
 
-admin_menus = [{ "title" : "User", "icon" : "icon-user", "url":"fr_User"}, { "title" : "Camera", "icon" : "icon-camcorder", "url":"fr_Camera"}, { "title" : "Video", "icon" : "icon-screen-desktop", "url":"fr_Video"}]
+admin_menus = [{ "title" : "Dashboard", "icon" : "icon-home", "url":"fr_Dashboard"}, { "title" : "User", "icon" : "icon-user", "url":"fr_User"}, { "title" : "Camera", "icon" : "icon-camcorder", "url":"fr_Camera"}]
 
 @app.route('/bk/Menu', methods=['GET'])
 def get_menu_item():
@@ -388,7 +376,7 @@ def load_page(param):
 	return render_template('empty.html')
 
 @app.route('/Dashboard')
-def fr_test():
+def fr_Dashboard():
 	return load_page('Dashboard')
 	
 @app.route('/User')
@@ -407,9 +395,6 @@ def fr_Camera():
 def fr_Camera_View():
 	return load_page('Camera_View')
 
-@app.route('/Video')
-def fr_Video():
-	return load_page('Video')
 
 @app.route('/Log_out')
 def Log_out():
@@ -460,26 +445,6 @@ def bk_GetAllAlarmCategory():
 	result = get_full_data(sql_command)
 	update_record(updated_sql_command, (1, session['user_email'], 0))
 	return json.dumps(result)
-
-@app.route('/videos/zipDownload', methods=['POST'])
-def bk_videos_zip_download():
-	files = request.form.get('filePath').split(',')
-	cur_time = datetime.datetime.now()
-	filename = video_temp_folder + '/' + 'videos(%04d-%02d-%02d %02d-%02d-%02d).zip' % (cur_time.year, cur_time.month, cur_time.day, cur_time.hour, cur_time.minute, cur_time.second)
-	f = zipfile.ZipFile(filename, 'w', zipfile.ZIP_DEFLATED)
-	files_in_zip = []
-	for file in files:
-		if not os.path.isfile(file): continue
-		cur_file = cur_file0 = os.path.basename(file)
-		a, b = os.path.splitext(cur_file0)
-		i = 1
-		while cur_file in files_in_zip:
-			cur_file = a + "_" + str(i) + b
-			i += 1
-		files_in_zip.append(cur_file)
-		f.write(file, cur_file)
-	f.close()
-	return json.dumps({'fullPath': filename, 'fileName': os.path.basename(filename)})
 
 if __name__ == "__main__":
 	app.run(debug=True, host='0.0.0.0', port=5000, threaded=True)
