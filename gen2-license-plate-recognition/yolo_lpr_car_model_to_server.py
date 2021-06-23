@@ -511,6 +511,7 @@ with dai.Device(create_pipeline()) as device:
                 if rec_text in buffer:
                     past_timestamp = buffer[rec_text]
                     if (rec_timestamp - past_timestamp).seconds < same_number_duration: continue
+                print('detected ' + rec_text)
                 buffer[rec_text] = rec_timestamp
                 orig_frame = orig_frame_.copy()
                 cv2.rectangle(orig_frame, (lp_bbox[0], lp_bbox[1]), (lp_bbox[2], lp_bbox[3]), (255, 0, 0), 2)
