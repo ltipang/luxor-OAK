@@ -6,7 +6,7 @@ from pathlib import Path
 import cv2
 import depthai as dai
 import numpy as np
-import os
+import os, requests
 
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
 car_names = []
@@ -203,6 +203,7 @@ class FPSHandler:
         return self.frame_cnt / (self.timestamp - self.start)
 
 
+# whole detection tracking params
 running = True
 license_detections = []
 vehicle_detections = []
@@ -218,6 +219,13 @@ frame_seq_map = {}
 lic_last_seq = 0
 veh_last_seq = 0
 frames_delay = 100
+
+# LPR tracking params
+lpr_post_url = 'http://160.153.74.200:5000/bk/lpr'
+buffer = {}
+same_number_duration = 10 * 60  # 10 mins
+debug = False
+upload_data = None
 
 if args.camera:
     fps = FPSHandler()
@@ -284,7 +292,7 @@ def rec_thread(q_rec, q_pass):
             SequenceNum = q_pass.get().getSequenceNum()
         except RuntimeError:
             continue
-        decoded_text = ""
+        decoded_text, decoded_prob = "", 0
         x_pos, y_pos, labels = [], [], []
         for rec in rec_data:
             if rec.label < 0:
@@ -294,9 +302,11 @@ def rec_thread(q_rec, q_pass):
             #y_pos.append(rec.ymin)
             #x_pos.append((rec.ymin + rec.ymax) / 2)
             labels.append(items[int(rec.label)])
+            decoded_prob += rec.confidence
         # simple rule
+        if len(labels) < 1: continue
         decoded_text = detect_numer(x_pos, y_pos, labels)
-        rec_results[SequenceNum] = (cv2.resize(rec_frame, (224, 64)), decoded_text, timestamp)
+        rec_results[SequenceNum] = (cv2.resize(rec_frame, (224, 64)), decoded_text, decoded_prob / len(labels), timestamp)
         fps.tick('rec')
 
 
@@ -363,7 +373,20 @@ def attr_thread(q_attr, q_pass):
         attr_results[SequenceNum] = (attr_frame, color, type, color_prob, type_prob, timestamp)
         fps.tick('attr')
 
-		
+def upload_thread():
+    global upload_data
+    while running:
+        if upload_data is not None:
+            try:
+                upload_data = {'model': attr_color, 'model_prob': color_prob, 'plate_number': rec_text, 'plate_prob': decoded_prob, 'log_file': os.path.abspath(img_path)}
+                r = requests.post(lpr_post_url, data=data)
+                print('uploaded lpr data into server.')
+            except:
+                print("can't upload lpr data into server.")
+            upload_data = None
+        time.sleep(1)
+
+	
 with dai.Device(create_pipeline()) as device:
     print("Starting pipeline...")
     device.startPipeline()
@@ -395,6 +418,9 @@ with dai.Device(create_pipeline()) as device:
     veh_t.start()
     attr_t = threading.Thread(target=attr_thread, args=(attr_nn, attr_pass))
     attr_t.start()
+    # upload lpr data
+    upload_t = threading.Thread(target=upload_thread, args=())
+    upload_t.start()
 
     def should_run():
         return cap.isOpened() if args.video else True
@@ -471,25 +497,31 @@ with dai.Device(create_pipeline()) as device:
                 if SequenceNum not in attr_keys:
                     found = False
                     for SequenceNum2 in attr_keys:
-                        if SequenceNum2 > SequenceNum + 1: break
-                        if SequenceNum - SequenceNum2 in [1, -1]: found = True; break
+                        if SequenceNum2 > SequenceNum: break
+                        if SequenceNum - SequenceNum2 == 1: found = True; break
                     if not found: continue
                 else: SequenceNum2 = SequenceNum
                 veh_bbox, lp_bbox = veh_det_results.pop(SequenceNum2), lpr_det_results.pop(SequenceNum)
-                rec_img, rec_text, rec_timestamp = rec_results.pop(SequenceNum)
+                rec_img, rec_text, decoded_prob, rec_timestamp = rec_results.pop(SequenceNum)
                 #rec_timestamp = str(datetime.datetime.fromtimestamp(rec_timestamp))
                 attr_img, attr_color, attr_type, color_prob, type_prob, attr_timestamp = attr_results.pop(SequenceNum2)
                 if lp_bbox[2] < veh_bbox[0] or lp_bbox[0] > veh_bbox[2] or lp_bbox[3] < veh_bbox[1] or lp_bbox[1] > veh_bbox[3]: continue
                 orig_frame_ = frame_seq_map.get(SequenceNum, None)
                 if orig_frame_ is None: continue
+                if rec_text in buffer:
+                    past_timestamp = buffer[rec_text]
+                    if (rec_timestamp - past_timestamp).seconds < same_number_duration: continue
+                buffer[rec_text] = rec_timestamp
                 orig_frame = orig_frame_.copy()
                 cv2.rectangle(orig_frame, (lp_bbox[0], lp_bbox[1]), (lp_bbox[2], lp_bbox[3]), (255, 0, 0), 2)
                 cv2.rectangle(orig_frame, (veh_bbox[0], veh_bbox[1]), (veh_bbox[2], veh_bbox[3]), (0, 0, 255), 2)
-                cv2.putText(orig_frame, rec_text, (15, 25), cv2.FONT_HERSHEY_TRIPLEX, 0.5, (0, 255, 0))
+                cv2.putText(orig_frame, f"{rec_text} ({int(decoded_prob * 100)} %)", (15, 25), cv2.FONT_HERSHEY_TRIPLEX, 0.5, (0, 255, 0))
                 cv2.putText(orig_frame, attr_color, (15, 45), cv2.FONT_HERSHEY_TRIPLEX, 0.5, (0, 255, 0))
-                cv2.putText(orig_frame, f"{int(color_prob * 100)}%", (15, 65), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0))
+                cv2.putText(orig_frame, f"{int(color_prob * 100)} %", (15, 65), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0))
                 cv2.putText(orig_frame, f"{rec_timestamp}", (15, 85), cv2.FONT_HERSHEY_TRIPLEX, 0.5, (0, 255, 0))
-                cv2.imwrite(lpr_img_folder + '/%05d.jpg' % SequenceNum, orig_frame)
+                img_path = lpr_img_folder + '/%09d_%s.jpg' % (SequenceNum, rec_text)
+                cv2.imwrite(img_path, orig_frame)
+                upload_data = {'model': attr_color, 'model_prob': color_prob, 'plate_number': rec_text, 'plate_prob': decoded_prob, 'log_file': os.path.abspath(img_path)}
                 if not debug: continue # show
                 attr_placeholder_img = np.zeros((224, 400, 3), np.uint8)
                 attr_placeholder_img[:rec_img.shape[0], :rec_img.shape[1], :] = rec_img
@@ -541,6 +573,7 @@ det_t.join()
 rec_t.join()
 veh_t.join()
 attr_t.join()
+upload_t.join()
 
 print("FPS: {:.2f}".format(fps.fps()))
 if not args.camera:

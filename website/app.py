@@ -197,6 +197,18 @@ def bk_zone_delete():
 	update_record(sql_command, zone_id)
 	return json.dumps(success_200_message('ok'))
 
+#sql_command = 'select `id`, `password`, `name`, `email`, `register_date`, `role_id` from `tbl_admin` where `role_id` != 1'
+@app.route('/bk/lpr', methods=['POST'])
+def bk_lpr_add():
+	model = request.form.get('model')
+	model_prob = request.form.get('model_prob')
+	plate_number = request.form.get('plate_number')
+	plate_prob = request.form.get('plate_prob')
+	log_file = request.form.get('log_file')
+	sql_command = 'insert into `result` (`model`, `model_prob`, `plate_number`, `plate_prob`, `log_file`) values (%s, %s, %s, %s, %s)'
+	update_record(sql_command, (model, model_prob, plate_number, plate_prob, log_file))
+	return json.dumps(success_200_message('ok'))
+
 ############################   menu   ############################
 usual_menu_items = ['Dashboard','Setting', 'Camera_View', 'Video']
 usual_menu_texts = ['Dashboard','Setting', 'Camera_View', 'Video']
