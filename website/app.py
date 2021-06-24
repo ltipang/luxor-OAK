@@ -1,8 +1,7 @@
 from flask import Flask, render_template, request, json, session, Response, jsonify, url_for
 from responses import error_400_message, error_401_message, error_403_message, success_200_message
-import os, cv2, datetime, base64, pickle
+import os, datetime
 from datetime import timedelta
-import zipfile
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.urandom(24)
