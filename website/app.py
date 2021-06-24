@@ -214,7 +214,7 @@ usual_menu_texts = ['Dashboard','Setting', 'LPR_log']
 admin_menu_items = ['Dashboard', 'User', 'Camera', 'LPR_log']
 admin_menu_texts = ['Dashboard','User', 'Camera', 'LPR_log']
 
-user_menus = [{ "title" : "LPR_log", "icon" : "icon-list", "url":"fr_lpr_log"}, { "title" : "Setting", "icon" : "icon-settings", "url":"fr_Setting"}]
+user_menus = [{ "title" : "Dashboard", "icon" : "icon-home", "url":"fr_Dashboard"}, { "title" : "LPR_log", "icon" : "icon-list", "url":"fr_lpr_log"}, { "title" : "Setting", "icon" : "icon-settings", "url":"fr_Setting"}]
 
 #admin_menus = [{ "title" : "Dashboard", "icon" : "icon-home", "url":"fr_test"}, { "title" : "User", "icon" : "icon-user", "url":"fr_User"}, { "title" : "Camera", "icon" : "icon-camcorder", "url":"fr_Camera"}, { "title" : "Video", "icon" : "icon-screen-desktop", "url":"fr_Video"}]
 
@@ -294,15 +294,27 @@ def bk_LPR_log_cameras():
 def main_register():
 	return render_template('index.html')
 
-	
+def get_statistics():
+	lpr_logs_num = get_one_record('SELECT COUNT(id) FROM `result`;', ())[1][0]
+	cameras_num = get_one_record('SELECT COUNT(id) FROM `cameras`;', ())[1][0]
+	users_num = get_one_record('SELECT COUNT(id) FROM `tbl_admin`;', ())[1][0]
+	return lpr_logs_num, cameras_num, users_num
+
 def load_page(param):
 	if session.get('admin') is None:
 		return render_template('index.html')
 	if session['admin']:
 		if param in admin_menu_items:
+			if param == 'Dashboard':
+				lpr_logs_num, cameras_num, users_num = get_statistics()
+				return render_template('{}.html'.format(param), menu_items = admin_menus, selected=param, lpr_logs=lpr_logs_num, cameras=cameras_num, users=users_num)
 			return render_template('{}.html'.format(param), menu_items = admin_menus, selected=param)
 	else:
-		if param in usual_menu_items: return render_template('{}.html'.format(param), menu_items = user_menus, selected=param)
+		if param in usual_menu_items:
+			if param == 'Dashboard':
+				lpr_logs_num, cameras_num, users_num = get_statistics()
+				return render_template('{}.html'.format(param), menu_items = user_menus, selected=param, lpr_logs=lpr_logs_num, cameras=cameras_num, users=users_num)
+			return render_template('{}.html'.format(param), menu_items = user_menus, selected=param)
 	return render_template('empty.html')
 
 @app.route('/Dashboard')
