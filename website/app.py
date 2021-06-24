@@ -210,16 +210,16 @@ def bk_lpr_add():
 	return json.dumps(success_200_message('ok'))
 
 ############################   menu   ############################
-usual_menu_items = ['Dashboard','Setting', 'Camera_View', 'Video']
-usual_menu_texts = ['Dashboard','Setting', 'Camera_View', 'Video']
-admin_menu_items = ['Dashboard', 'User', 'Camera', 'Video']
-admin_menu_texts = ['Dashboard','User', 'Camera', 'Video']
+usual_menu_items = ['Dashboard','Setting', 'LPR_log']
+usual_menu_texts = ['Dashboard','Setting', 'LPR_log']
+admin_menu_items = ['Dashboard', 'User', 'Camera', 'LPR_log']
+admin_menu_texts = ['Dashboard','User', 'Camera', 'LPR_log']
 
-user_menus = [{ "title" : "Camera_View", "icon" : "icon-camcorder", "url":"fr_Camera_View"}, { "title" : "Setting", "icon" : "icon-settings", "url":"fr_Setting"}]
+user_menus = [{ "title" : "LPR_log", "icon" : "icon-list", "url":"fr_lpr_log"}, { "title" : "Setting", "icon" : "icon-settings", "url":"fr_Setting"}]
 
 #admin_menus = [{ "title" : "Dashboard", "icon" : "icon-home", "url":"fr_test"}, { "title" : "User", "icon" : "icon-user", "url":"fr_User"}, { "title" : "Camera", "icon" : "icon-camcorder", "url":"fr_Camera"}, { "title" : "Video", "icon" : "icon-screen-desktop", "url":"fr_Video"}]
 
-admin_menus = [{ "title" : "Dashboard", "icon" : "icon-home", "url":"fr_Dashboard"}, { "title" : "User", "icon" : "icon-user", "url":"fr_User"}, { "title" : "Camera", "icon" : "icon-camcorder", "url":"fr_Camera"}]
+admin_menus = [{ "title" : "Dashboard", "icon" : "icon-home", "url":"fr_Dashboard"}, { "title" : "LPR_log", "icon" : "icon-list", "url":"fr_lpr_log"}, { "title" : "User", "icon" : "icon-user", "url":"fr_User"}, { "title" : "Camera", "icon" : "icon-camcorder", "url":"fr_Camera"}]
 
 @app.route('/bk/Menu', methods=['GET'])
 def get_menu_item():
@@ -260,30 +260,13 @@ def bk_Camera():
 	users = get_full_data(sql_command)
 	return json.dumps({'cameras': cameras, 'admin': True, 'users': users})
 
-@app.route('/bk/Camera_View', methods=['GET'])
+@app.route('/bk/LPR_log', methods=['GET'])
 def bk_Camera_View():
-	sql_command = 'select `id`, `name` from `zones` where `user_id` = %s' % (session['user_id'])
-	zones = get_full_data(sql_command)
-	zone_ids = {}
-	for i, zone in enumerate(zones):
-		zone['ID'] = "1_" + str(i + 1)
-		zone['categoryId'] = "1"
-		zone['camera_name'] = zone['name']
-		zone['expanded'] = True
-		zone_ids[zone['id']] = zone['ID']
-	sql_command = 'select `camera_name`, `camera_url`, `zone_id` from `cameras` where `user_id` = %s and state = %s' % (session['user_id'], '1')
-	cameras = get_full_data(sql_command)
-	viewed_cameras = session['viewed_cameras_info'].split(',')
-	for i, camera in enumerate(cameras):
-		camera['ID'] = zone_ids[camera['zone_id']] + '_' + str(i + 1)
-		camera['categoryId'] = zone_ids[camera['zone_id']]
-		if camera['camera_name'] in viewed_cameras: camera['selected'] = True
-	cameras.insert(0, {
-		'ID': "1",
-		'camera_name': "cameras",
-		'expanded': True
-	})
-	return json.dumps(cameras + zones)
+	sql_command = 'select * from `result` ORDER BY `created` DESC;'
+	results = get_full_data(sql_command)
+	for i, result in enumerate(results):
+		result['no'] = i + 1
+	return json.dumps({'results': results})
 
 ############################   web pages   ############################
 @app.route('/')
@@ -317,9 +300,9 @@ def fr_Setting():
 def fr_Camera():
 	return load_page('Camera')
 
-@app.route('/Camera_View')
-def fr_Camera_View():
-	return load_page('Camera_View')
+@app.route('/LPR_log')
+def fr_lpr_log():
+	return load_page('LPR_log')
 
 
 @app.route('/Log_out')
