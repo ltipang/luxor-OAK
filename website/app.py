@@ -261,12 +261,31 @@ def bk_Camera():
 	return json.dumps({'cameras': cameras, 'admin': True, 'users': users})
 
 @app.route('/bk/LPR_log', methods=['GET'])
-def bk_Camera_View():
-	sql_command = 'select * from `result` ORDER BY `created` DESC;'
+def bk_LPR_log():
+	timeline = request.args.get('timeline')
+	if timeline is not None:
+		if timeline == 'All':
+			sql_command = 'select * from `result` ORDER BY `created` DESC;'
+		elif timeline == 'Today':
+			sql_command = 'select * from `result` WHERE DATE(`created`) = DATE(NOW()) ORDER BY `created` DESC;'
+		elif timeline == 'This Week':
+			sql_command = 'select * from `result` WHERE WEEK(`created`) = WEEK(NOW()) and YEAR(`created`) = YEAR(NOW()) ORDER BY `created` DESC;'
+		elif timeline == 'This Month':
+			sql_command = 'select * from `result` WHERE MONTH(`created`) = MONTH(NOW()) and YEAR(`created`) = YEAR(NOW()) ORDER BY `created` DESC;'
+		elif timeline == 'This Year':
+			sql_command = 'select * from `result` WHERE YEAR(`created`) = YEAR(NOW()) ORDER BY `created` DESC;'
+	else:
+		sql_command = 'SELECT videos.*, cameras.`camera_name`, cameras.`location`, zones.`name` AS zone_name FROM (SELECT * FROM `videos`) videos LEFT JOIN cameras ON videos.`camera_id` = cameras.`id` LEFT JOIN zones ON cameras.`zone_id` = zones.`id` WHERE {} ORDER BY `start_time` DESC;'.format(request.args.get('where_cmd'))
 	results = get_full_data(sql_command)
 	for i, result in enumerate(results):
 		result['no'] = i + 1
-	return json.dumps({'results': results})
+	return json.dumps(results)
+
+@app.route('/bk/LPR_log/cameras', methods=['GET'])
+def bk_LPR_log_cameras():
+	sql_command = 'select `id`, `camera_name` from `cameras`'
+	cameras = get_full_data(sql_command)
+	return json.dumps(cameras)
 
 ############################   web pages   ############################
 @app.route('/')
