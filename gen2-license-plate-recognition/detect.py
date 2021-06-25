@@ -84,7 +84,7 @@ def create_pipeline():
 
     if args.camera:
         manip = pipeline.createImageManip()
-        manip.initialConfig.setResize(224, 224)
+        manip.initialConfig.setResize(300, 300)
         manip.initialConfig.setFrameType(dai.RawImgFrame.Type.BGR888p)
         cam.preview.link(manip.inputImage)
         manip.out.link(det_nn.input)

@@ -61,7 +61,7 @@ def create_pipeline():
     if args.camera:
         print("Creating Color Camera...")
         cam = pipeline.createColorCamera()
-        cam.setPreviewSize(416, 416)
+        cam.setPreviewSize(672, 384)
         cam.setResolution(dai.ColorCameraProperties.SensorResolution.THE_1080_P)
         cam.setInterleaved(False)
         cam.setBoardSocket(dai.CameraBoardSocket.RGB)
@@ -137,12 +137,12 @@ def create_pipeline():
     veh_nn.passthrough.link(veh_pass.input)
 
     if args.camera:
-        manip_v = pipeline.createImageManip()
-        manip_v.initialConfig.setResize(672, 384)
-        manip_v.initialConfig.setFrameType(dai.RawImgFrame.Type.BGR888p)
-        cam.preview.link(manip_v.inputImage)
-        manip_v.out.link(veh_nn.input)
-        #cam.preview.link(veh_nn.input)
+        #manip_v = pipeline.createImageManip()
+        #manip_v.initialConfig.setResize(672, 384)
+        #manip_v.initialConfig.setFrameType(dai.RawImgFrame.Type.BGR888p)
+        #cam.preview.link(manip_v.inputImage)
+        #manip_v.out.link(veh_nn.input)
+        cam.preview.link(veh_nn.input)
     else:
         veh_xin = pipeline.createXLinkIn()
         veh_xin.setStreamName("veh_in")
@@ -224,7 +224,7 @@ frames_delay = 100
 lpr_post_url = 'http://157.245.214.97:5000/bk/lpr'
 buffer = {}
 same_number_duration = 10 * 60  # 10 mins
-debug = False
+#debug = False
 upload_data = None
 
 if args.camera:
@@ -436,10 +436,12 @@ with dai.Device(create_pipeline()) as device:
                 frame_det_seq += 1
             return read_correctly, frame
         else:
-            in_rgb = cam_out.get()
-            frame = in_rgb.getCvFrame()
-            frame_seq_map[in_rgb.getSequenceNum()] = frame
-
+            try:
+                in_rgb = cam_out.get()
+                frame = in_rgb.getCvFrame()
+                frame_seq_map[in_rgb.getSequenceNum()] = frame
+            except:
+                frame = None
             return True, frame
 
 
@@ -447,8 +449,8 @@ with dai.Device(create_pipeline()) as device:
         while should_run():
             read_correctly, frame = get_frame()
 
-            if not read_correctly:
-                break
+            if not read_correctly: break
+            if frame is None: print('issue in camera streaming.');continue
                 
             for map_key in list(filter(lambda item: item <= min(lic_last_seq, veh_last_seq), frame_seq_map.keys())):
                 del frame_seq_map[map_key]
@@ -537,8 +539,10 @@ with dai.Device(create_pipeline()) as device:
                 debug_frame = frame.copy()
                 for bbox in license_detections:
                     cv2.rectangle(debug_frame, (bbox[0], bbox[1]), (bbox[2], bbox[3]), (255, 0, 0), 2)
+                if len(license_detections) > 0: print('license detected.')
                 for bbox in vehicle_detections:
                     cv2.rectangle(debug_frame, (bbox[0], bbox[1]), (bbox[2], bbox[3]), (0, 0, 255), 2)
+                if len(vehicle_detections) > 0: print('vehicle detected.')
                 cv2.putText(debug_frame, f"RGB FPS: {round(fps.fps(), 1)}", (5, 15), cv2.FONT_HERSHEY_SIMPLEX, 0.5,
                             (0, 255, 0))
                 cv2.putText(debug_frame, f"LIC(detect) FPS:  {round(fps.tick_fps('lic'), 1)}", (5, 30), cv2.FONT_HERSHEY_SIMPLEX,
