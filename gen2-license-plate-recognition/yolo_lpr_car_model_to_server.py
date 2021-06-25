@@ -221,7 +221,7 @@ veh_last_seq = 0
 frames_delay = 100
 
 # LPR tracking params
-lpr_post_url = 'http://160.153.74.200:5000/bk/lpr'
+lpr_post_url = 'http://157.245.214.97:5000/bk/lpr'
 buffer = {}
 same_number_duration = 10 * 60  # 10 mins
 debug = False
@@ -379,7 +379,7 @@ def upload_thread():
         if upload_data is not None:
             try:
                 upload_data = {'model': attr_color, 'model_prob': color_prob, 'plate_number': rec_text, 'plate_prob': decoded_prob, 'log_file': os.path.abspath(img_path)}
-                r = requests.post(lpr_post_url, data=data)
+                r = requests.post(lpr_post_url, data=upload_data)
                 print('uploaded lpr data into server.')
             except:
                 print("can't upload lpr data into server.")
