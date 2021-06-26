@@ -59,7 +59,7 @@ def create_pipeline():
         cam.setBoardSocket(dai.CameraBoardSocket.RGB)
         cam_xout = pipeline.createXLinkOut()
         cam_xout.setStreamName("cam_out")
-        cam.preview.link(cam_xout.input)
+        cam.video.link(cam_xout.input)
 
     # NeuralNetwork
     print("Creating License Plates Detection Neural Network...")
