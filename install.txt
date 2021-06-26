@@ -1,0 +1,91 @@
+----------------------Jetson install
+
+1. install python package.
+		pip3 install -r requirements.txt
+		apt-get install python3-pandas
+		
+2. install mysql
+	https://www.digitalocean.com/community/tutorials/how-to-install-mysql-on-ubuntu-18-04
+	
+	After install, plz set username, password.
+	
+3. create db. 
+	mysql -u username -p camera < camera.sql
+	# if camera db is exist already, then plz delete db and create it again. 
+	mysql -u username -p
+	drop database camera;
+	create database camera;
+	
+	3.1. mysql.cnf file setting
+		
+		/etc/my.cnf
+		/etc/mysql/my.cnf
+		
+		# plz add this line in mysql.cnf (if exists, plz modify it)
+		
+		wait_timeout = 31536000
+		max_allowed_packet = 32M
+
+4. GPIO install
+	sudo pip3 install Jetson.GPIO
+	
+	- permission setting
+	
+	sudo groupadd -f -r gpio
+	sudo usermod -a -G gpio <user_id> # for example <user_id>  = bomn
+	sudo cp /opt/nvidia/jetson-gpio/etc/99-gpio.rules /etc/udev/rules.d/
+	reboot
+	
+5. setting program
+	/controller/__init__.py
+	
+	26 line: Device_Type = "jetson" 
+	27 line: Sever_Addr ="xx.xx.xx.xx"
+		# Plz write server local ip address
+	35 line: db = Database('localhost', 'root', '', 'camera')
+		#  For MySQL, host, user, password, db_name
+		
+	47-53 line: #  For MySQL, host, user, password, db_name
+				# Same as 35 line
+
+5. running program
+	python3 run.py
+
+
+6. Setting auto start after booting
+	# open terminal and write this command
+	crontab -e
+	@reboot /usr/bin/python3 /home/jetson/Documents/lpr_jetson/run.py
+	# save and reboot
+	
+-------------------------------------------PC install
+1. install python package.
+		pip install -r requirements.txt
+		pip install pandas
+2. install mysql
+	Please install xampp	
+	After install, plz set username, password.
+	
+3. create db. 
+	With phpmyadmin, you can import camera.sql
+	
+	3.1. mysql.ini file setting
+		# plz add this line in mysql.ini (if exists, plz modify it)
+		
+		wait_timeout = 31536000
+		max_allowed_packet = 32M
+		
+4. setting program
+	/controller/__init__.py
+	
+	26 line: Device_Type = "pc"			
+	27 line: Sever_Addr =""		
+	35 line: db = Database('localhost', 'root', '', 'camera')
+		#  For MySQL, host, user, password, db_name
+		
+	47-53 line: #  For MySQL, host, user, password, db_name
+				# Same as 35 line
+
+5. running program
+	python3 run.py
+	
