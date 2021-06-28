@@ -289,6 +289,18 @@ def bk_LPR_log_cameras():
 		camera_names.append(camera['camera_name'])
 	return json.dumps({'cameras': cameras, 'camera_names': camera_names})
 
+
+@app.route('/bk/Dashboard/statistics/VehicleColor/total', methods=['GET'])
+def bk_Dashboard_statistics_VehicleColor_total():
+	sql_command = 'SELECT `color`, COUNT(`color`) FROM `result` GROUP BY `color`;'
+	vehicle_colors = get_records(sql_command, ())
+	colors = ['black', 'blue', 'brown', 'gold', 'green', 'grey', 'maroon', 'orange', 'red', 'silver', 'white', 'yellow']
+	result = []
+	for item in vehicle_colors:
+		result.append({'type': colors[item[0]], 'count': item[1]})
+	return json.dumps(result)
+	
+
 ############################   web pages   ############################
 @app.route('/')
 def main_register():
@@ -347,6 +359,7 @@ def Log_out():
 def Lock_screen():
 	return render_template('lock.html')
 
+	
 ############################   Alarm   ############################
 @app.route('/api/CameraDisconnect', methods=['POST'])
 def api_cameraDisconnect():
@@ -389,4 +402,4 @@ def bk_GetAllAlarmCategory():
 	return json.dumps(result)
 
 if __name__ == "__main__":
-	app.run(debug=True, host='0.0.0.0', port=5000, threaded=True)
+	app.run(debug=True, host='0.0.0.0', port=5001, threaded=True)

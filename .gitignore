@@ -4,3 +4,4 @@ website/__pycache__/*
 *.MOV
 *.MP4
 gen2-license-plate-recognition/yolo_lpr_car_model.py
+gen2-license-plate-recognition/*.avi
