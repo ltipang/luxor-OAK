@@ -49,5 +49,52 @@ $(function () {
 			color_of_visit.endUpdate();
 		}
 	});
+	var model_of_vehicle = $("#popular_vehicle_model").dxPieChart({
+        palette: "bright",
+        dataSource: [],
+        legend: {
+            orientation: "horizontal",
+            itemTextPosition: "right",
+            horizontalAlignment: "center",
+            verticalAlignment: "bottom",
+            columnCount: 4
+        },
+        "export": {
+            enabled: true
+        },
+        margin: {
+            bottom: 20,
+        },
+        series: [{
+            argumentField: "type",
+            valueField: "count",
+            label: {
+                visible: true,
+                font: {
+                    size: 16
+                },
+                connector: {
+                    visible: true,
+                    width: 0.5
+                },
+                position: "columns",
+                customizeText: function (arg) {
+                    return arg.valueText + " (" + arg.percentText + ")";
+                }
+            }
+        }]
+    }).dxPieChart("instance");
 
+	$.ajax({
+		url: '/bk/Dashboard/statistics/VehicleModel/total',
+		error: function (result) {
+			alert("There is a Problem, Try Again!");			
+		},
+		success: function (result) {
+			result = JSON.parse(result);
+			model_of_vehicle.beginUpdate();
+			model_of_vehicle.option("dataSource", result);
+			model_of_vehicle.endUpdate();
+		}
+	});
 });

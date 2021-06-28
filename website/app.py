@@ -300,7 +300,15 @@ def bk_Dashboard_statistics_VehicleColor_total():
 		result.append({'type': colors[item[0]], 'count': item[1]})
 	return json.dumps(result)
 	
-
+@app.route('/bk/Dashboard/statistics/VehicleModel/total', methods=['GET'])
+def bk_Dashboard_statistics_VehicleModel_total():
+	sql_command = 'SELECT `model`, COUNT(`model`) FROM `result` GROUP BY `model`;'
+	vehicle_models = get_records(sql_command, ())
+	result = []
+	for item in vehicle_models:
+		result.append({'type': item[0], 'count': item[1]})
+	return json.dumps(result)
+	
 ############################   web pages   ############################
 @app.route('/')
 def main_register():
